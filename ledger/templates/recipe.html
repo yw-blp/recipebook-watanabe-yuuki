@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <h3>{{ name }}</h3>
+    <ul>
+        {% for ingredient in ingredients %}
+            <li style="list-style-type:square;">
+                {{ ingredient.quantity }} of {{ ingredient.name }}
+            </li>
+        {% endfor %}
+    </ul>      
+{% endblock %}
