@@ -3,7 +3,20 @@
         <title>Recipes App</title>
     </head>
     <body>
-        <h1>{% block header %}Recipe Book{% endblock header %}</h1>
+        <nav>
+            {% if user.is_authenticated %}
+                <div>User: {{ user.username }}</div>
+                <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </nav>
+        <hr>
+        <h2>{% block header %}Recipe Book{% endblock header %}</h2>
         {% block body %}{% endblock %}
     </body>
 
