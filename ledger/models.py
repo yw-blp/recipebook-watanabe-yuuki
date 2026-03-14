@@ -1,11 +1,15 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator, MaxLengthValidator
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='profile'
+    )
     name = models.CharField(max_length=50)
     bio = models.TextField(
         validators=[
@@ -30,7 +34,7 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
-        related_name='authors'
+        related_name='recipes'
     )
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -40,6 +44,24 @@ class Recipe(models.Model):
 
     def get_absolute_url(self):
         return reverse('ledger:recipe-detail', args=[str(self.id)])
+
+
+class RecipeImage(models.Model):
+    image = models.ImageField(upload_to='images/')
+    description = models.TextField(
+        validators=[
+            MaxLengthValidator(255,
+                               'Field must contain 255 characters or less')
+        ]
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='images'
+    )
+
+    def __str__(self):
+        return self.description
 
 
 class RecipeIngredient(models.Model):
