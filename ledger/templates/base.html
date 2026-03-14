@@ -1,24 +1,27 @@
-<html>
+{% load static %}
+<html lang="en-US">
     <head>
         <title>Recipes App</title>
+        <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css">
+        {% block styles %}{% endblock %}
     </head>
     <body>
         <nav>
             {% if user.is_authenticated %}
-                <div>User: {{ user.username }}</div>
+                <p>User: {{ user.username }}</p>
                 <form method="POST" action="{% url 'logout' %}">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Logout</button>
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
                 </form>
             {% else %}
                 <a href="{% url 'login' %}">Login</a>
             {% endif %}
         </nav>
         <hr>
-        <h2>{% block header %}Recipe Book{% endblock header %}</h2>
+        <h2>Recipe Book</h2>
         <hr>
+        {% block header %}{% endblock header %}
         {% block body %}{% endblock %}
+        {% block scripts %}{% endblock %}
     </body>
-
 </html>
