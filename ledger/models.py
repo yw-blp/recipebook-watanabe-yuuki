@@ -30,7 +30,7 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
-        related_name='profiles'
+        related_name='authors'
     )
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
